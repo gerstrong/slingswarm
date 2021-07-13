@@ -121,7 +121,7 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
         var pages_wrapper = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         pages_wrapper.set_size_request (-1, 30);        
         container.pack_end (pages_wrapper, false, true, 15);
-        
+
         // Find number of pages and populate
         this.update_pages (this.apps);
         if (this.total_pages >  1) {
@@ -130,8 +130,9 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
                 this.pages.append (p.to_string ());
             } 
         }
+
         this.pages.set_active (0);
-        
+
         // Signals and callbacks
         this.add_events (Gdk.EventMask.SCROLL_MASK);
         //this.button_release_event.connect ( () => { this.destroy(); return false; });

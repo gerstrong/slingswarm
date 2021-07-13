@@ -134,8 +134,8 @@ namespace Slingshot.Frontend {
                 
                 var linear_gradient = new Cairo.Pattern.linear (size.x, size.y, size.x, size.y + size.height);
                 linear_gradient.add_color_stop_rgba (0.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.0);
-                linear_gradient.add_color_stop_rgba (0.5, this.prominent.R, this.prominent.G, this.prominent.B, 0.25/progress);
-                linear_gradient.add_color_stop_rgba (1.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.4/progress);
+                linear_gradient.add_color_stop_rgba (0.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.25/progress);
+                linear_gradient.add_color_stop_rgba (0.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.4/progress);
                 
                 context.set_source (linear_gradient);
                 Slingshot.Frontend.Utilities.draw_rounded_rectangle (context, 10, 0.5, size);
@@ -144,8 +144,8 @@ namespace Slingshot.Frontend {
             }  else  {
                 if (this.current_frame > 1) {           
                     var linear_gradient = new Cairo.Pattern.linear (size.x, size.y, size.x, size.y + size.height);
-                    linear_gradient.add_color_stop_rgba (0.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.0);
-                    linear_gradient.add_color_stop_rgba (0.5, this.prominent.R, this.prominent.G, this.prominent.B, 0.25 - 0.25/progress);
+                    linear_gradient.add_color_stop_rgba (1.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.0);
+                    linear_gradient.add_color_stop_rgba (1.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.25 - 0.25/progress);
                     linear_gradient.add_color_stop_rgba (1.0, this.prominent.R, this.prominent.G, this.prominent.B, 0.4 - 0.4/progress);
                     
                     context.set_source (linear_gradient);
