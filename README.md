@@ -6,6 +6,21 @@ This project was originally forked from Slingscold:
 
   * http://sourceforge.net/projects/slingscold/
 
+## Requirements
+
+
+  * gtk+-3.0
+  * gee-0.8
+  * libgnome-menu-3.0
+
+On recent Ubuntu (20.04) install those as follows:
+
+```
+sudo apt install libgnome-menu-3-dev libgtk-3-dev libgee-0.8-dev valac-bin valac-0.48-vapi
+
+```
+
+
 ## Compilation
 
 Enter inside the **build** folder and execute `cmake ..` and after `make`.
