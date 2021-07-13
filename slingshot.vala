@@ -37,7 +37,7 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
         //this.set_keep_above (true);
         this.set_default_size (monitor_dimensions.width,  monitor_dimensions.height);
 
-        // Set icon size  
+        // Set icon size
         double suggested_size = (Math.pow (monitor_dimensions.width * monitor_dimensions.height, ((double) (1.0/3.0))) / 1.6);
         if (suggested_size < 27) {
             this.icon_size = 24;
@@ -154,7 +154,12 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
                 item.button_release_event.connect ( () => {
                     
                     try {
-                        new GLib.DesktopAppInfo.from_filename (this.filtered.get((int) (this.children.index(item) + (this.pages.active * this.grid_y * this.grid_x)))["desktop_file"]).launch (null, null);
+                        var deskIdx = this.pages.active * this.grid_y * this.grid_x;
+
+                        if(deskIdx < 0)
+                            deskIdx = 0;
+
+                        new GLib.DesktopAppInfo.from_filename (this.filtered.get((int) (this.children.index(item) + deskIdx))["desktop_file"]).launch (null, null);
                         this.destroy();
                     } catch (GLib.Error e) {
                         stdout.printf("Error! Load application: " + e.message);
@@ -173,12 +178,16 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
     private void update_grid (Gee.ArrayList<Gee.HashMap<string, string>> apps) {    
         
         int item_iter = (int)(this.pages.active * this.grid_y * this.grid_x);
+
+        if(this.pages.active<0)
+            item_iter = 0;
+
         for (int r = 0; r < this.grid_x; r++) {
             
             for (int c = 0; c < this.grid_y; c++) {
                 
                 int table_pos = c + (r * (int)this.grid_y); // position in table right now
-                
+
                 var item = this.children.nth_data(table_pos);
                 if (item_iter < apps.size) {
                     var current_item = apps.get(item_iter);
@@ -196,10 +205,9 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
                 }
                 
                 item_iter++;
-                
             }
         }
-        
+
         // Update number of pages
         this.update_pages (apps);
         
@@ -208,15 +216,26 @@ public class SlingshotWindow : ElementaryWidgets.CompositedWindow {
     }
     
     private void change_category () {
+
         this.filtered.clear ();
-        
-        if (this.categories.active != 0) {
-            Slingshot.Backend.GMenuEntries.enumerate_apps (Slingshot.Backend.GMenuEntries.get_applications_for_category (this.all_categories.get (this.categories.active - 1)), this.icons, this.icon_size, out this.filtered);
-        } else {
+
+        if (this.categories.active != 0 )
+        {
+            var slot = this.categories.active - 1;
+
+            if(slot < 0)
+                    slot = 0;
+
+            Slingshot.Backend.GMenuEntries.enumerate_apps (
+                          Slingshot.Backend.GMenuEntries.get_applications_for_category (this.all_categories.get (slot)),
+                                    this.icons, this.icon_size, out this.filtered);
+        }
+        else
+        {
             this.filtered.add_all (this.apps);
         }
-        
         this.pages.set_active (0); // go back to first page in category
+
     }
     
     private void update_pages (Gee.ArrayList<Gee.HashMap<string, string>> apps) {

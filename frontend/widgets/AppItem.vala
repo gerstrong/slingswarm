@@ -1,4 +1,8 @@
 
+
+using Gtk;
+using Cairo;
+
 namespace Slingshot.Frontend {
 
     public class AppItem : Gtk.EventBox {
@@ -13,6 +17,9 @@ namespace Slingshot.Frontend {
         const int DURATION = 200;
         const int RUN_LENGTH = (int)(DURATION/FPS); // total number of frames
         private int current_frame = 1; // run length, in frames
+
+
+        private const int SIZE = 30;
 
         public AppItem (int size) {
             this.icon_size = size;
@@ -81,9 +88,11 @@ namespace Slingshot.Frontend {
         }
         
         private bool draw_icon (Gtk.Widget widget, Cairo.Context ctx) {
-            Gtk.Allocation size;
+
+    Gtk.Allocation size;
             widget.get_allocation (out size);
-            var context = Gdk.cairo_create (widget.get_window ());
+            var window = widget.get_window ();
+            var context = Gdk.cairo_create (window);
             
             // Draw icon
             Gdk.cairo_set_source_pixbuf (context, this.icon, size.x + ((this.icon.width - size.width) / -2.0), size.y);
@@ -104,10 +113,11 @@ namespace Slingshot.Frontend {
             context.set_source_rgba (1.0, 1.0, 1.0, 1.0);        
             context.move_to (size.x + size.width/2 - extents.width/2, size.y + size.height - 10);
             context.show_text (this.label);
-            
+
+
             return false;
         }
-        
+
         private bool draw_background (Gtk.Widget widget, Cairo.Context ctx) {
             Gtk.Allocation size;
             widget.get_allocation (out size);
